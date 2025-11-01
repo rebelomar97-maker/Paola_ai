@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اكتشف مسارك المهني المثالي بالذكاء الاصطناعي</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-top: 50px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 42px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #4a5568;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .question-title {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option {
+            background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: right;
+            font-size: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            z-index: 0;
+        }
+
+        .option span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .option:hover {
+            transform: translateX(-5px);
+            border-color: #667eea;
+        }
+
+        .option:hover:before {
+            width: 100%;
+        }
+
+        .option:hover span {
+            color: white;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .result {
+            display: none;
+            text-align: center;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .result-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            font-size: 32px;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .result-description {
+            font-size: 18px;
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .feature {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .feature-text {
+            font-size: 16px;
+            color: #4a5568;
+        }
+
+        .email-section {
+            background: linear-gradient(135deg, #f6f9fc 0%, #e9f0f7 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 20px;
+            border: 2px dashed #667eea;
+        }
+
+        input[type="email"] {
+            transition: all 0.3s ease;
+        }
+
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .exit-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .exit-popup.active {
+            display: flex;
+        }
+
+        .exit-popup-content {
+            background: white;
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.5s ease-out;
+            text-align: center;
+        }
+
+        .exit-close {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #718096;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .exit-close:hover {
+            background: #f7fafc;
+            color: #2d3748;
+            transform: rotate(90deg);
+        }
+
+        .exit-icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .exit-title {
+            font-size: 32px;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .exit-subtitle {
+            font-size: 18px;
+            color: #4a5568;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .exit-offer {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 3px dashed #e17055;
+        }
+
+        .exit-offer-text {
+            font-size: 24px;
+            color: #2d3748;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .exit-offer-sub {
+            font-size: 16px;
+            color: #4a5568;
+        }
+
+        .exit-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .exit-btn-accept {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 184, 148, 0.4);
+        }
+
+        .exit-btn-accept:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 184, 148, 0.6);
+        }
+
+        .exit-btn-decline {
+            background: transparent;
+            color: #718096;
+            border: 2px solid #e2e8f0;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .exit-btn-decline:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .countdown {
+            font-size: 48px;
+            font-weight: bold;
+            color: #e17055;
+            margin: 20px 0;
+            animation: pulse 1s infinite;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 28px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .hero {
+                padding: 30px 20px;
+            }
+            
+            .quiz-container {
+                padding: 25px 15px;
+            }
+
+            .exit-popup-content {
+                padding: 30px 20px;
+            }
+
+            .exit-title {
+                font-size: 24px;
+            }
+
+            .exit-buttons {
+                flex-direction: column;
+            }
+
+            .exit-btn-accept, .exit-btn-decline {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <!-- Exit Intent Popup -->
+    <div class="exit-popup" id="exitPopup">
+        <div class="exit-popup-content">
+            <div class="exit-close" onclick="closeExitPopup()">✕</div>
+            
+            <div class="exit-icon">⏰</div>
+            
+            <h2 class="exit-title">انتظر! عرض حصري لك</h2>
+            
+            <p class="exit-subtitle">
+                قبل أن تغادر.. لديك فرصة أخيرة للحصول على خصم خاص!
+            </p>
+
+            <div class="exit-offer">
+                <div class="exit-offer-text">🎁 خصم 50% على أفضل الدورات</div>
+                <div class="exit-offer-sub">العرض ينتهي خلال:</div>
+                <div class="countdown" id="countdown">05:00</div>
+            </div>
+
+            <p style="font-size: 16px; color: #4a5568; margin-bottom: 25px;">
+                ✅ وصول فوري للمحتوى<br>
+                ✅ شهادة معتمدة<br>
+                ✅ دعم فني مدى الحياة
+            </p>
+
+            <div class="exit-buttons">
+                <button class="exit-btn-accept" onclick="acceptExitOffer()">
+                    نعم! أريد الاستفادة من العرض 🚀
+                </button>
+                <button class="exit-btn-decline" onclick="closeExitPopup()">
+                    لا شكراً، سأفوت الفرصة
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="hero">
+            <div class="badge">🔥 أكثر من 50,000 شخص أكملوا الاختبار</div>
+            
+            <h1>اكتشف <span class="gradient-text">مسارك المهني المثالي</span> في 60 ثانية</h1>
+            
+            <p class="subtitle">
+                اختبار شخصية مدعوم بالذكاء الاصطناعي يحلل مهاراتك واهتماماتك ليرشدك للمهنة المناسبة
+            </p>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">97%</span>
+                    <span class="stat-label">دقة التوقعات</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">أسئلة فقط</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">مجاني</span>
+                    <span class="stat-label">بالكامل</span>
+                </div>
+            </div>
+
+            <button class="cta-button" onclick="startQuiz()">ابدأ الاختبار الآن ←</button>
+        </div>
+
+        <div class="quiz-container" id="quizContainer" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <div class="question active" data-question="1">
+                <h2 class="question-title">ما الذي يحفزك أكثر في العمل؟</h2>
+                <div class="options">
+                    <div class="option" onclick="nextQuestion(2, 0)">
+                        <span>🎯 حل المشكلات المعقدة والتحديات</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(2, 1)">
+                        <span>👥 العمل مع الناس ومساعدتهم</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(2, 2)">
+                        <span>🎨 الإبداع والابتكار</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(2, 3)">
+                        <span>📊 تحليل البيانات واتخاذ القرارات</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" data-question="2">
+                <h2 class="question-title">أي بيئة عمل تفضل؟</h2>
+                <div class="options">
+                    <div class="option" onclick="nextQuestion(3, 0)">
+                        <span>💻 العمل عن بعد والمرونة</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(3, 1)">
+                        <span>🏢 بيئة مكتبية منظمة</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(3, 2)">
+                        <span>🌍 السفر والتنقل المستمر</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(3, 3)">
+                        <span>🎪 بيئة ديناميكية متغيرة</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" data-question="3">
+                <h2 class="question-title">ما هي أقوى مهاراتك؟</h2>
+                <div class="options">
+                    <div class="option" onclick="nextQuestion(4, 0)">
+                        <span>🗣️ التواصل والإقناع</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(4, 1)">
+                        <span>🔧 المهارات التقنية</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(4, 2)">
+                        <span>🎭 الإبداع الفني</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(4, 3)">
+                        <span>📈 التخطيط الاستراتيجي</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" data-question="4">
+                <h2 class="question-title">كم ساعة مستعد للاستثمار أسبوعياً لتطوير مهاراتك؟</h2>
+                <div class="options">
+                    <div class="option" onclick="nextQuestion(5)">
+                        <span>⏰ أقل من 5 ساعات</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(5)">
+                        <span>📚 5-10 ساعات</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(5)">
+                        <span>🎓 10-15 ساعة</span>
+                    </div>
+                    <div class="option" onclick="nextQuestion(5)">
+                        <span>🚀 أكثر من 15 ساعة</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question" data-question="5">
+                <h2 class="question-title">ما هو هدفك المهني خلال السنتين القادمتين؟</h2>
+                <div class="options">
+                    <div class="option" onclick="showResult()">
+                        <span>💼 الحصول على وظيفة أفضل</span>
+                    </div>
+                    <div class="option" onclick="showResult()">
+                        <span>🚀 بدء مشروعي الخاص</span>
+                    </div>
+                    <div class="option" onclick="showResult()">
+                        <span>📈 الترقية في عملي الحالي</span>
+                    </div>
+                    <div class="option" onclick="showResult()">
+                        <span>🔄 تغيير المجال بالكامل</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result" id="result">
+                <div class="result-icon">🎉</div>
+                <h2 class="result-title">رائع! لقد حللنا شخصيتك المهنية</h2>
+                <p class="result-description">
+                    بناءً على إجاباتك، أنت تمتلك إمكانات كبيرة في المجالات التقنية والإبداعية. 
+                    نوصي بشدة بتطوير مهاراتك في البرمجة، التسويق الرقمي، أو التصميم.
+                </p>
+
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-text">مسار مهني واضح</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📚</div>
+      
