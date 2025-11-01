@@ -139,6 +139,11 @@
             padding: 40px;
             margin-top: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .quiz-container.active {
+            display: block;
         }
 
         .question {
@@ -544,7 +549,7 @@
     </div>
     
     <div class="container">
-        <div class="hero">
+        <div class="hero" id="heroSection">
             <div class="badge">🔥 أكثر من 50,000 شخص أكملوا الاختبار</div>
             
             <h1>اكتشف <span class="gradient-text">مسارك المهني المثالي</span> في 60 ثانية</h1>
@@ -571,7 +576,7 @@
             <button class="cta-button" onclick="startQuiz()">ابدأ الاختبار الآن ←</button>
         </div>
 
-        <div class="quiz-container" id="quizContainer" style="display: none;">
+        <div class="quiz-container" id="quizContainer">
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -633,16 +638,16 @@
             <div class="question" data-question="4">
                 <h2 class="question-title">كم ساعة مستعد للاستثمار أسبوعياً لتطوير مهاراتك؟</h2>
                 <div class="options">
-                    <div class="option" onclick="nextQuestion(5)">
+                    <div class="option" onclick="nextQuestion(5, 0)">
                         <span>⏰ أقل من 5 ساعات</span>
                     </div>
-                    <div class="option" onclick="nextQuestion(5)">
+                    <div class="option" onclick="nextQuestion(5, 1)">
                         <span>📚 5-10 ساعات</span>
                     </div>
-                    <div class="option" onclick="nextQuestion(5)">
+                    <div class="option" onclick="nextQuestion(5, 2)">
                         <span>🎓 10-15 ساعة</span>
                     </div>
-                    <div class="option" onclick="nextQuestion(5)">
+                    <div class="option" onclick="nextQuestion(5, 3)">
                         <span>🚀 أكثر من 15 ساعة</span>
                     </div>
                 </div>
@@ -651,16 +656,16 @@
             <div class="question" data-question="5">
                 <h2 class="question-title">ما هو هدفك المهني خلال السنتين القادمتين؟</h2>
                 <div class="options">
-                    <div class="option" onclick="showResult()">
+                    <div class="option" onclick="showResult(0)">
                         <span>💼 الحصول على وظيفة أفضل</span>
                     </div>
-                    <div class="option" onclick="showResult()">
+                    <div class="option" onclick="showResult(1)">
                         <span>🚀 بدء مشروعي الخاص</span>
                     </div>
-                    <div class="option" onclick="showResult()">
+                    <div class="option" onclick="showResult(2)">
                         <span>📈 الترقية في عملي الحالي</span>
                     </div>
-                    <div class="option" onclick="showResult()">
+                    <div class="option" onclick="showResult(3)">
                         <span>🔄 تغيير المجال بالكامل</span>
                     </div>
                 </div>
@@ -681,4 +686,140 @@
                     </div>
                     <div class="feature">
                         <div class="feature-icon">📚</div>
-      
+                        <div class="feature-text">دورات موصى بها</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">💰</div>
+                        <div class="feature-text">فرص دخل عالية</div>
+                    </div>
+                </div>
+
+                <button class="cta-button" onclick="redirectToOffer()">
+                    شاهد النتيجة الآن (سريع) →
+                </button>
+
+                <div style="margin: 30px 0; position: relative;">
+                    <div style="text-align: center; color: #718096; font-size: 16px; margin: 20px 0;">
+                        أو
+                    </div>
+                </div>
+
+                <div class="email-section">
+                    <h3 style="font-size: 22px; color: #2d3748; margin-bottom: 15px;">
+                        🎁 احصل على تقرير مفصل مخصص لك
+                    </h3>
+                    <p style="font-size: 16px; color: #4a5568; margin-bottom: 20px;">
+                        أدخل إيميلك واحصل على:
+                    </p>
+                    <ul style="text-align: right; color: #4a5568; margin-bottom: 25px; list-style: none;">
+                        <li style="margin-bottom: 10px;">✅ تحليل شامل لشخصيتك المهنية (20 صفحة)</li>
+                        <li style="margin-bottom: 10px;">✅ خطة تطوير مخصصة لك</li>
+                        <li style="margin-bottom: 10px;">✅ فرص وظيفية حصرية</li>
+                        <li style="margin-bottom: 10px;">✅ دورات وموارد مجانية</li>
+                    </ul>
+                    
+                    <form id="emailForm" onsubmit="submitEmail(event)" style="display: flex; flex-direction: column; gap: 15px;">
+                        <input 
+                            type="email" 
+                            id="emailInput" 
+                            placeholder="أدخل بريدك الإلكتروني" 
+                            required
+                            style="padding: 15px 20px; font-size: 16px; border: 2px solid #e2e8f0; border-radius: 10px; text-align: right;"
+                        >
+                        <button type="submit" class="cta-button" style="margin: 0;">
+                            إرسال التقرير المفصل 📧
+                        </button>
+                    </form>
+                    
+                    <p style="font-size: 13px; color: #a0aec0; margin-top: 15px; text-align: center;">
+                        🔒 لن نرسل لك رسائل مزعجة. بياناتك آمنة 100%
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // المتغيرات العامة
+        let currentQuestion = 1;
+        let userAnswers = [];
+        let exitIntentShown = false;
+        let countdownInterval;
+
+        // روابط عروض CPA
+        const cpaOffers = {
+            offer1: 'https://smrturl.co/a/s83f9eabcdb/16024?s1=',
+            offer2: 'https://smrturl.co/a/s83f9eabcdb/13409?s1=',
+            offer3: 'https://smrturl.co/a/s83f9eabcdb/91?s1='
+        };
+
+        // إنشاء النجوم المتحركة
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Exit Intent Detection
+        document.addEventListener('mouseleave', function(e) {
+            if (e.clientY <= 0 && !exitIntentShown) {
+                showExitPopup();
+            }
+        });
+
+        // بدء الاختبار
+        function startQuiz() {
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('quizContainer').classList.add('active');
+            updateProgress();
+        }
+
+        // الانتقال للسؤال التالي
+        function nextQuestion(questionNum, answerValue) {
+            userAnswers.push(answerValue);
+            document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+            currentQuestion = questionNum;
+            document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+            updateProgress();
+        }
+
+        // تحديث شريط التقدم
+        function updateProgress() {
+            const progress = (currentQuestion / 5) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // عرض النتيجة
+        function showResult(answerValue) {
+            userAnswers.push(answerValue);
+            document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+            document.getElementById('result').classList.add('active');
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        // التوجيه لعرض CPA
+        function redirectToOffer() {
+            const sum = userAnswers.reduce((a, b) => a + b, 0);
+            let selectedOffer;
+            
+            if (sum <= 5) {
+                selectedOffer = cpaOffers.offer1;
+            } else if (sum <= 10) {
+                selectedOffer = cpaOffers.offer2;
+            } else {
+                selectedOffer = cpaOffers.offer3;
+            }
+            
+            window.location.href = selectedOffer;
+        }
+
+        // إرسال الإيميل
+        function submitEmail(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('emailInput').value;
+            console.log('Email collected:', email
